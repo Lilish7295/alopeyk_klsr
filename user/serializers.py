@@ -1,6 +1,7 @@
+from typing import Any, Dict
 from .models import CustomUser
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -9,14 +10,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         
         model = CustomUser
         fields = (
-            'id', 'username', 'phone_number' ,
-            'city', 'adress', 'user_type', 'register_date'
-                )
+            'username', 'phone_number' ,
+            'password', 'city', 'user_type',
+        )
         
-
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    
-    def validate(self, attrs):
-        
-        data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
-        return data
