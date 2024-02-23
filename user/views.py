@@ -1,11 +1,9 @@
-from .models import CustomUser
-from .serializers import CustomUserSerializer
+from .models import CustomUser, CourierRequest
+from .serializers import CustomUserSerializer, CourierRequestSerializer
 from rest_framework import generics,status
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
 class UserRegistrationApiView(generics.CreateAPIView):
@@ -23,6 +21,18 @@ class UserRegistrationApiView(generics.CreateAPIView):
                 'access':str(refresh.access_token)}, status=status.HTTP_201_CREATED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CourierRequestCreatview(generics.CreateAPIView):
+    
+    serializer_class = CourierRequestSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        excisting_request = CourierRequest.objects.filter(status='pending').first()
+        if not excisting_request:
+            serializer.save(user=user)
     
    
 

@@ -1,8 +1,7 @@
-from django.contrib.auth.models import User, PermissionsMixin
+from django.contrib.auth.models import User
 from django.db import models
-from rest_framework_simplejwt.tokens import RefreshToken
 
-class CustomUser(User, PermissionsMixin):
+class CustomUser(User):
     
     USER_TYPE_CHOICES = [
         ('customer', 'کاربر عادی'),
@@ -17,4 +16,16 @@ class CustomUser(User, PermissionsMixin):
 
     def __str__(self):
         return self.username
+    
 
+class CourierRequest(models.Model):
+    
+    STATUS_CHOICES = [
+        ('pending','در انتظار'),
+        ('accepted','پذیرفته شده'),
+        ('rejected','رد شده'),
+    ]
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='pending')
+    def __str__(self):
+        return 'user {} courier_request {}'.format(self.user, self.status)
