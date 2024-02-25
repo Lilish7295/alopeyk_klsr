@@ -3,12 +3,10 @@ from rest_framework import serializers
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
-   
     class Meta:
-        
         model = CustomUser
         fields = (
-            'username', 'phone_number' ,
+            'id', 'username', 'phone_number' ,
             'password', 'city', 'user_type',
         )
 

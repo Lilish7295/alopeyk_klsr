@@ -33,6 +33,25 @@ class CourierRequestCreatview(generics.CreateAPIView):
         excisting_request = CourierRequest.objects.filter(status='pending').first()
         if not excisting_request:
             serializer.save(user=user)
+
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+
+
+class NormalUserDetail(generics.RetrieveUpdateDestroyAPIView):
+    
+    queryset = CustomUser.objects.filter(user_type='customer')
+    serializer_class = CustomUserSerializer
+
+
+class CourierUserDetail(generics.RetrieveUpdateDestroyAPIView):
+    
+    queryset = CustomUser.objects.filter(user_type='courier')
+    serializer_class = CustomUserSerializer
+
     
    
 

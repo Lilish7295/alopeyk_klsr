@@ -25,7 +25,9 @@ class CourierRequest(models.Model):
         ('accepted','پذیرفته شده'),
         ('rejected','رد شده'),
     ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='pending')
+    
     def __str__(self):
         return 'user {} courier_request {}'.format(self.user, self.status)
