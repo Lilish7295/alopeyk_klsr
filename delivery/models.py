@@ -38,12 +38,15 @@ class Package(models.Model):
     origin_lat = models.FloatField()
     destination_long = models.FloatField()
     destination_lat = models.FloatField()
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES)
-    pick_date = models.DateTimeField()
-    deliver_date = models.DateTimeField()
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    courier = models.ForeignKey(Courier, on_delete=models.CASCADE)
-    condition = models.TextField()
+    status = models.CharField(max_length=30,
+        choices=STATUS_CHOICES, default='waiting')
+    pick_date = models.DateTimeField(null=True, blank=True)
+    deliver_date = models.DateTimeField(null=True, blank=True)
+    customer = models.ForeignKey(Customer,
+        on_delete=models.CASCADE, null=True, blank=True)
+    courier = models.ForeignKey(Courier,
+        on_delete=models.CASCADE, null=True, blank=True)
+    condition = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
         return "{}-{}'s package".format(self.pk,self.status)
