@@ -1,3 +1,22 @@
-from django.contrib import admin
+from django.contrib.admin import ModelAdmin, register
+from .models import Courier, Customer, Package, Feedback
 
-# Register your models here.
+
+@register(Courier)
+class CourierAdmin(ModelAdmin):
+    pass
+
+
+@register(Customer)
+class CustomerAdmin(ModelAdmin):
+    pass
+
+
+@register(Package)
+class PackageAdmin(ModelAdmin):
+    pass
+
+
+@register(Feedback)
+class FeedbackAdmin(ModelAdmin):
+    pass
