@@ -1,3 +1,4 @@
+from django.conf import settings
 import requests
 from django.utils import timezone
 from rest_framework.views import APIView
@@ -25,21 +26,25 @@ class PackageView(APIView):
 
 class TripCostView(APIView):
 
-    MAP_BOX_DIRECTION_API_URL = 'https://platform.neshan.org/panel/api-key'
+    MAP_BOX_DIRECTION_API_URL = 'https://api.neshan.org/v4/direction?type=X&origin=A&destination=B'
     def process_mapbox_respons(self, respons):
         
-        api_key = 'web.40aa9a585436415aab34d0287217c47c'
-        base_url = 'https://platform.neshan.org/'
+        api_key = 'service.308a316f9ab1485183a8508d8437291a'
+        base_url = settings.BASE_URL
         cost_per_kilometer = 3000
         total_cost = respons.json()['routes'][0]['distance']/1000*cost_per_kilometer
+        headers = {
+            'X-CSRFToken': 'CSRF Token',
+            'Api-key': 'service.308a316f9ab1485183a8508d8437291a',
+            'Content-Type': 'application/json'
+        }
         params = {
             'origin' : '{},{}'.format((respons.json()['waypoints'][0]['location'][1]),
                 (respons.json()['waypoints'][0]['location'][0])),
             'destination' : '{},{}'.format((respons.json()['waypoints'][1]['location'][1]),
                 (respons.json()['waypoints'][1]['location'][0])),
-            'key' : api_key
         }
-        distance_response = requests.get(base_url, params=params)
+        distance_response = requests.get(base_url, headers=headers, params=params)
         distance_data = distance_response.json()
         return distance_data
     
@@ -91,10 +96,11 @@ class TripCostView(APIView):
             destination_long = requst.data.get('destination_long')
             origin = '{},{}'.format(origin_lat, origin_long)
             destination = '{},{}'.format(destination_lat,destination_long)
-            mapbox_api_key = 'web.40aa9a585436415aab34d0287217c47c'
+            mapbox_api_key = 'service.308a316f9ab1485183a8508d8437291a'
             url = self.MAP_BOX_DIRECTION_API_URL.format(origin=origin,
                 destination=destination, api_key=mapbox_api_key)
             response = requests.get(url)
+            print(response.json())
             distance_data = self.process_mapbox_respons(response)
             origin_weather_condition = self.get_weather_condition(origin)
             destination_weather_condition = self.get_weather_condition(destination)

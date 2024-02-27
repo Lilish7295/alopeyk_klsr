@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "rest_framework",
+    "rest_framework_api_key",
     'user',
     'delivery',
 ]
@@ -136,5 +139,7 @@ REST_FRAMEWORK = {
     ],
 }
 
+NESHAN_API_KEY = 'service.308a316f9ab1485183a8508d8437291a'
+BASE_URL = 'IR'
 
 
