@@ -139,7 +139,4 @@ REST_FRAMEWORK = {
     ],
 }
 
-NESHAN_API_KEY = 'service.308a316f9ab1485183a8508d8437291a'
-BASE_URL = 'IR'
-
 
