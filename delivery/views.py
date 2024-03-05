@@ -2,6 +2,7 @@ import requests
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics, status, permissions, serializers
 from .models import Package
 from .serializers import PackageSerializer
@@ -91,4 +92,22 @@ class TripCostView(APIView):
                     'date':pick_date}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({'error':str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+class CanselOrderView(APIView):
+
+    def post(self, request):
+        
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'},
+                status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            package = Package.objects.get(package_id=request.data.id,
+                customer=request.user.customer, condition = 'منتظر قبول پیک')
+            package.delete()
+            return Response({'success':'order canseled successfully'},
+                status=status.HTTP_200_OK)
+        except:
+            return Response({'error':'order not found or can not be canseled'},
+                status=status.HTTP_404_NOT_FOUND)
 
