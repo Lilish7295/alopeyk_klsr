@@ -4,33 +4,23 @@ from user.models import CustomUser
 
 class Courier(models.Model):
     
-    first_name = models.CharField(max_length=100, default=None)
-    last_name = models.CharField(max_length=100, default=None)
-    phone_number = models.ForeignKey(CustomUser,
-        on_delete=models.CASCADE, related_name='phone', default=None)
-    condition = models.TextField(default=None)
+    user = models.OneToOneField(CustomUser,
+        on_delete=models.CASCADE, related_name='courier')
+    user_type = models.CharField(max_length=8, choices=[('courier', 'کاربر پیک')])
+    condition = models.TextField()
 
     def __str__(self) -> str:
-        return "{} {}".format(self.first_name, self.last_name)
+        return "{}".format(self.user)
     
 
 class Customer(models.Model):
     
-    first_name = models.CharField(max_length=100, default=None)
-    last_name = models.CharField(max_length=100, default=None)
-    adress = models.ForeignKey(CustomUser,
-        on_delete=models.CASCADE, related_name='adrs', default=None)
-    phone_number = models.ForeignKey(CustomUser,
-        on_delete=models.CASCADE, related_name='phones', default=None)
-    user_name = models.ForeignKey(CustomUser,
-        on_delete=models.CASCADE, related_name='user', default=None)
-    password = models.ForeignKey(CustomUser,
-        on_delete=models.CASCADE, related_name='passw', default=None)
-    registery_date = models.ForeignKey(CustomUser,
-        on_delete=models.CASCADE, related_name='rg_date', default=None)
+    user = models.OneToOneField(CustomUser,
+        on_delete=models.CASCADE, related_name='customer')
+    user_type = models.CharField(max_length=8, choices=[('customer', 'کاربر عادی')])
 
     def __str__(self) -> str:
-        return "{} {}".format(self.first_name, self.last_name)
+        return "{}".format(self.user)
     
 
 class Package(models.Model):
@@ -48,13 +38,13 @@ class Package(models.Model):
     destination_lat = models.FloatField(default=None)
     status = models.CharField(max_length=30,
         choices=STATUS_CHOICES, default='waiting')
-    pick_date = models.DateTimeField(null=True, blank=True, default=None)
-    deliver_date = models.DateTimeField(null=True, blank=True, default=None)
+    pick_date = models.DateTimeField(null=True, blank=True)
+    deliver_date = models.DateTimeField(null=True, blank=True)
     customer = models.ForeignKey(Customer,
-        on_delete=models.CASCADE, null=True, blank=True, default=None)
+        on_delete=models.CASCADE, null=True, blank=True)
     courier = models.ForeignKey(Courier,
-        on_delete=models.CASCADE, null=True, blank=True, default=None)
-    condition = models.TextField(null=True, blank=True, default=None)
+        on_delete=models.CASCADE, null=True, blank=True)
+    condition = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
         return "{}-{}'s package".format(self.pk,self.status)
@@ -71,7 +61,7 @@ class Feedback(models.Model):
     ]
     package = models.ForeignKey(Package, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=RATING_CHOICES, default='2 - bad')
-    comments = models.TextField(blank=True, null=True, default=None)
+    comments = models.TextField(blank=True, null=True)
     date = models.DateTimeField(default=None)
 
     def __str__(self):

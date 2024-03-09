@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'alopeyk_klsr.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'alopeyk',
         'USER': 'postgres',
         'PASSWORD': 'Leyli7295',
         'HOST': 'localhost',
