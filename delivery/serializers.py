@@ -8,7 +8,7 @@ class PackageSerializer(serializers.ModelSerializer):
         model = Package
         fields = ['id', 'origin_long', 'origin_lat',
             'destination_long', 'destination_lat', 'status',
-            'pick_date', 'deliver_date', 'customer', 'courier', 'condition']
+            'pick_date', 'customer', 'courier', 'condition']
 
 
 class FeedbackSerializer(serializers.ModelSerializer):

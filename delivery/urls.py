@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PackageView, TripCostView, CanselOrderView
+from .views import PackageView, TripCostView, CreateOrder, CanselOrder, OrderListView
 
 
 urlpatterns = [
@@ -10,7 +10,13 @@ urlpatterns = [
     path('trip/cost/', TripCostView.as_view(),
         name='trip_cost'),
 
-    path('cansel/order/', CanselOrderView.as_view(),
+    path('create/order/', CreateOrder.as_view(),
+        name='create_order'),
+
+    path('cansel/order/<int:pk>/', CanselOrder.as_view(),
         name='cansel_order'),
+
+    path('order/list/', OrderListView.as_view(),
+        name='order_list_view'),
 
 ]

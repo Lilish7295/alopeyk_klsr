@@ -94,20 +94,40 @@ class TripCostView(APIView):
             return Response({'error':str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
-class CanselOrderView(APIView):
+class CreateOrder(generics.CreateAPIView):
+    
+    queryset = Package.objects.all()
+    serializer_class= PackageSerializer
+    
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
 
-    def post(self, request):
-        
-        if not request.user.is_authenticated:
-            return Response({'error': 'Authentication required'},
-                status=status.HTTP_401_UNAUTHORIZED)
-        try:
-            package = Package.objects.get(package_id=request.data.id,
-                customer=request.user.customer, condition = 'منتظر قبول پیک')
-            package.delete()
-            return Response({'success':'order canseled successfully'},
-                status=status.HTTP_200_OK)
-        except:
-            return Response({'error':'order not found or can not be canseled'},
-                status=status.HTTP_404_NOT_FOUND)
+
+class CanselOrder(generics.UpdateAPIView):
+
+    queryset = Package.objects.all()
+    serializer_class = PackageSerializer
+
+    def update(self, request, *args, **kwargs):
+        isinstance = self.get_object()
+        isinstance.status = "canselled"
+        isinstance.save()
+        return super().update(request, *args, **kwargs)
+    
+
+class OrderListView(generics.ListAPIView):
+
+    serializer_class = PackageSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            if user.is_anonymous:
+                return Package.objects.none()
+            else:
+                return Package.objects.filter(customer=user)
+        else:
+            return Package.objects.none()
+
+
 
