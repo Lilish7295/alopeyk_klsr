@@ -1,19 +1,5 @@
-from .models import Courier, Customer, Package, Feedback
+from .models import Package, Feedback
 from rest_framework import serializers
-
-
-class CourierSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Courier
-        fields = "__all__"
-
-
-class CustomerSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Customer
-        fields = "__all__"
 
 
 class PackageSerializer(serializers.ModelSerializer):

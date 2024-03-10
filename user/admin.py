@@ -1,3 +1,4 @@
+from typing import Any
 from django.contrib.admin import ModelAdmin, register
 from .models import CustomUser, CourierRequest
 
@@ -5,6 +6,7 @@ from .models import CustomUser, CourierRequest
 @register(CustomUser)
 class CustomUserAdmin(ModelAdmin):
     pass
+
 
 @register(CourierRequest)
 class CourierRequestAdmin(ModelAdmin):

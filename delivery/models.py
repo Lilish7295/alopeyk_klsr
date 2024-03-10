@@ -1,26 +1,6 @@
 from typing import Any
 from django.db import models
 from user.models import CustomUser
-
-class Courier(models.Model):
-    
-    user = models.OneToOneField(CustomUser,
-        on_delete=models.CASCADE, related_name='courier')
-    user_type = models.CharField(max_length=8, choices=[('courier', 'کاربر پیک')])
-    condition = models.TextField()
-
-    def __str__(self) -> str:
-        return "{}".format(self.user)
-    
-
-class Customer(models.Model):
-    
-    user = models.OneToOneField(CustomUser,
-        on_delete=models.CASCADE, related_name='customer')
-    user_type = models.CharField(max_length=8, choices=[('customer', 'کاربر عادی')])
-
-    def __str__(self) -> str:
-        return "{}".format(self.user)
     
 
 class Package(models.Model):
@@ -40,10 +20,10 @@ class Package(models.Model):
         choices=STATUS_CHOICES, default='waiting')
     pick_date = models.DateTimeField(null=True, blank=True)
     deliver_date = models.DateTimeField(null=True, blank=True)
-    customer = models.ForeignKey(Customer,
-        on_delete=models.CASCADE, null=True, blank=True)
-    courier = models.ForeignKey(Courier,
-        on_delete=models.CASCADE, null=True, blank=True)
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, 
+        related_name='customer', null=True, blank=True)
+    courier = models.ForeignKey(CustomUser, on_delete=models.CASCADE,
+         related_name='courier', null=True, blank=True)
     condition = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
